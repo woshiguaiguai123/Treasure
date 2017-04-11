@@ -1,0 +1,50 @@
+/**
+     * 注解：
+     * 1. 请求的方式：@GET、@POST、@PUT等
+     * 2. 请求的url的处理：
+     *      1. 可替换块：{id}替换的内容，@Path注解来替换。
+     *      2. 查询参数：@Query("查询的参数的key")
+     *                  参数比较多：@QueryMap
+     * 3. 请求头信息： 添加： @Headers({}) 请求方法上面
+     *                修改： @Header("x-type")String header 参数动态修改的
+     * 4. 请求体：@Body String json;
+     *           1. 表单：@FormUrlEncoded
+     *                   @Field("username") String username
+     *                   @FieldMap Map<String,String> map
+     *           2. 多部分：@Multipart
+     *                   @Part("name")String name
+     *                   @PartMap Map<String,String> map
+     */
+
+    @POST("group/{id}/users?sort=desc")
+    @Headers({"x-type:123","x-length:1024"})
+    Call<ResponseBody> groupList(@Path("id") int groupId,
+                                 @Query("sort") String sort,
+                                 @QueryMap Map<String,String> map,
+                                 @Header("x-type")String header,
+                                 @Body String json);
+
+    @POST("xxxx")
+    @FormUrlEncoded
+    Call<ResponseBody> getFormUrl(@Field("username") String username,
+                                  @Field("password")String password,
+                                  @FieldMap Map<String,String> map);
+
+    @POST("yyyy")
+    @Multipart
+    Call<ResponseBody> getMultUrl(@Part("photo")File file,
+                                  @Part("name")String name,
+                                  @PartMap Map<String,String> map);
+
+
+
+    // 表单：
+    @POST("http://wx.feicuiedu.com:9094/yitao/UserWeb?method=register")
+    @FormUrlEncoded
+    Call<ResponseBody> getFormData(@Field("username")String name,
+                                   @Field("password")String password);
+
+    // 多部分：
+    @POST("http://wx.feicuiedu.com:9094/yitao/UserWeb?method=update")
+    @Multipart
+    Call<ResponseBody> getMultData(@Part("user")MultUser user);
